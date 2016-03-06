@@ -4,21 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.lcc.blog.R;
-import com.lcc.blog.adapter.TestAdapter;
+import com.lcc.blog.adapter.PostAdapter;
 import com.lcc.blog.base.BaseActivity;
-import com.lcc.blog.model.Model;
-import com.lcc.blog.model.Tag;
-import com.lcc.blog.service.BlogService;
+import com.lcc.blog.model.PostModel;
+import com.lcc.blog.service.user.PostService;
 import com.lcc.blog.utils.RetrofitUtil;
 import com.lcc.blog.utils.UserManager;
+import com.lcc.state_refresh_recyclerview.Recycler.NiceAdapter;
 import com.lcc.state_refresh_recyclerview.Recycler.StateRecyclerView;
-
-import java.util.List;
 
 import butterknife.Bind;
 import retrofit2.Call;
@@ -29,23 +26,28 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.stateRecyclerView)
     StateRecyclerView stateRecyclerView;
 
-    TestAdapter testAdapter;
+    PostAdapter postAdapter;
+    int currentPage = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         stateRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        stateRecyclerView.setAdapter(testAdapter = new TestAdapter(this));
+        stateRecyclerView.setAdapter(postAdapter = new PostAdapter(this));
         stateRecyclerView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                currentPage = 1;
+                postAdapter.showLoadMoreView();
                 getData();
             }
         });
-        testAdapter.showNoMoreView();
+        postAdapter.setOnLoadMoreListener(new NiceAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                ++currentPage;
+                getData();
+            }
+        });
         getData();
     }
 
@@ -63,8 +65,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_login) {
             if(UserManager.isLogin())
             {
                 toast(UserManager.getUser().username+",您已经登陆过了");
@@ -83,21 +84,39 @@ public class MainActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    PostService postService;
     private void getData()
     {
-        BlogService blogService = RetrofitUtil.create(BlogService.class);
-        blogService.getTags().enqueue(new Callback<Model<List<Tag>>>() {
+        if(postService == null)
+        {
+            postService = RetrofitUtil.create(PostService.class);
+        }
+        postService.getPosts(currentPage).enqueue(new Callback<PostModel>() {
             @Override
-            public void onResponse(Call<Model<List<Tag>>> call, Response<Model<List<Tag>>> response) {
+            public void onResponse(Call<PostModel> call, Response<PostModel> response) {
                 if(response.isSuccess())
                 {
-                    testAdapter.initData(response.body().results);
+                    if(currentPage == 1)
+                    {
+                        postAdapter.initData(response.body().results);
+                    }
+                    else
+                    {
+                        if(response.body().results.isEmpty())
+                        {
+                            postAdapter.showNoMoreView();
+                        }
+                        else
+                        {
+                            postAdapter.addData(response.body().results);
+                        }
+                    }
                 }
                 stateRecyclerView.setRefreshing(false);
             }
 
             @Override
-            public void onFailure(Call<Model<List<Tag>>> call, Throwable t) {
+            public void onFailure(Call<PostModel> call, Throwable t) {
                 stateRecyclerView.setRefreshing(false);
             }
         });

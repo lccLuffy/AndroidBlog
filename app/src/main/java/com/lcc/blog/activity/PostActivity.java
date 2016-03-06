@@ -1,7 +1,6 @@
 package com.lcc.blog.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +9,7 @@ import android.widget.EditText;
 import com.lcc.blog.R;
 import com.lcc.blog.base.BaseActivity;
 import com.lcc.blog.model.Model;
-import com.lcc.blog.service.BlogService;
+import com.lcc.blog.service.user.PostService;
 import com.lcc.blog.utils.RetrofitUtil;
 import com.lcc.blog.utils.UserManager;
 
@@ -32,9 +31,6 @@ public class PostActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,8 +57,8 @@ public class PostActivity extends BaseActivity {
             toast("不能为空");
             return;
         }
-        BlogService blogService = RetrofitUtil.create(BlogService.class);
-        blogService.createPost(title,content_markdown,UserManager.getToken()).enqueue(new Callback<Model<String>>() {
+        PostService postService = RetrofitUtil.create(PostService.class);
+        postService.createPost(title,content_markdown,UserManager.getToken()).enqueue(new Callback<Model<String>>() {
             @Override
             public void onResponse(Call<Model<String>> call, Response<Model<String>> response) {
                 if(response.isSuccess())

@@ -18,8 +18,4 @@ import retrofit2.http.Query;
 public interface BlogService {
     @GET("tag")
     Call<Model<List<Tag>>> getTags();
-
-    @FormUrlEncoded
-    @POST("post")
-    Call<Model<String>> createPost(@Field("title") String title, @Field("content_markdown") String content_markdown, @Query("token") String token);
 }

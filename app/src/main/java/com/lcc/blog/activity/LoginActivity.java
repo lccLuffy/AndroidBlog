@@ -18,32 +18,28 @@ import android.widget.TextView;
 
 import com.lcc.blog.R;
 import com.lcc.blog.base.BaseActivity;
-import com.lcc.blog.model.Authentication;
-import com.lcc.blog.model.Model;
-import com.lcc.blog.service.user.UserService;
-import com.lcc.blog.utils.RetrofitUtil;
-import com.lcc.blog.utils.UserManager;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.lcc.blog.iml.LoginPresenterImp;
+import com.lcc.blog.presenter.LoginPresenter;
+import com.lcc.blog.view.LoginView;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends BaseActivity{
+public class LoginActivity extends BaseActivity implements LoginView{
 
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
 
+    LoginPresenter loginPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Set up the login form.
+
+        loginPresenter = new LoginPresenterImp(this);
+
+
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -115,7 +111,7 @@ public class LoginActivity extends BaseActivity{
             focusView.requestFocus();
         } else {
             showProgress(true);
-            login(email,password);
+            loginPresenter.login(email,password);
         }
     }
 
@@ -154,41 +150,17 @@ public class LoginActivity extends BaseActivity{
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
-    public void login(String email, String password)
-    {
-        UserService userService = RetrofitUtil.create(UserService.class);
-        Call<Model<Authentication>> tokenCall = userService.login(email,password);
-        tokenCall.enqueue(new Callback<Model<Authentication>>() {
-            @Override
-            public void onResponse(Call<Model<Authentication>> call, Response<Model<Authentication>> response) {
-                showProgress(false);
-                Model<Authentication> model = response.body();
-                if(response.isSuccess() && model != null)
-                {
-                    if(!model.error)
-                    {
-                        toast("登录成功");
-                        UserManager.saveAuthentication(model.results);
-                    }
-                    else
-                    {
-                        toast("登录失败,"+model.message);
-                    }
-                }
-                else
-                {
-                    toast("登录失败");
-                }
-            }
 
-
-            @Override
-            public void onFailure(Call<Model<Authentication>> call, Throwable t) {
-                toast("登录失败");
-                showProgress(false);
-            }
-        });
+    @Override
+    public void onSuccess() {
+        showProgress(false);
+        toast("登录成功");
     }
 
+    @Override
+    public void onFail(String msg) {
+        showProgress(false);
+        toast(msg);
+    }
 }
 

@@ -15,21 +15,16 @@ import android.widget.EditText;
 
 import com.lcc.blog.R;
 import com.lcc.blog.base.BaseActivity;
-import com.lcc.blog.model.Authentication;
-import com.lcc.blog.model.Model;
-import com.lcc.blog.service.user.UserService;
-import com.lcc.blog.utils.RetrofitUtil;
-import com.lcc.blog.utils.UserManager;
+import com.lcc.blog.iml.RegisterPresenterImp;
+import com.lcc.blog.presenter.RegisterPresenter;
+import com.lcc.blog.view.RegisterView;
 
 import butterknife.Bind;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class RegisterActivity extends BaseActivity{
+public class RegisterActivity extends BaseActivity implements RegisterView{
 
     @Bind(R.id.email)
     AutoCompleteTextView mEmailView;
@@ -51,11 +46,12 @@ public class RegisterActivity extends BaseActivity{
 
     @Bind(R.id.email_sign_in_button)
     Button register;
+
+    RegisterPresenter registerPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        registerPresenter = new RegisterPresenterImp(this);
 
         register.setOnClickListener(new OnClickListener() {
             @Override
@@ -135,7 +131,7 @@ public class RegisterActivity extends BaseActivity{
             return;
         }
         showProgress(true);
-        register(username,email,password);
+        registerPresenter.register(username,email,password);
     }
 
     private boolean isEmailValid(String email) {
@@ -177,44 +173,16 @@ public class RegisterActivity extends BaseActivity{
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
-    public void register(String username, String email, String password)
-    {
-        UserService userService = RetrofitUtil.create(UserService.class);
-        Call<Model<Authentication>> authenticationCall = userService.register(
-                username,
-                email,
-                password
-        );
-        authenticationCall.enqueue(new Callback<Model<Authentication>>() {
-            @Override
-            public void onResponse(Call<Model<Authentication>> call, Response<Model<Authentication>> response) {
-                showProgress(false);
-                Model<Authentication> model = response.body();
-                if(response.isSuccess() && model != null)
-                {
-                    if(!model.error)
-                    {
-                        toast("注册成功");
-                        UserManager.saveAuthentication(model.results);
-                    }
-                    else
-                    {
-                        toast("注册失败,"+model.message);
-                    }
-                }
-                else
-                {
-                    toast("注册失败");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Model<Authentication>> call, Throwable t) {
-                toast("注册失败");
-                showProgress(false);
-            }
-        });
+    @Override
+    public void onSuccess() {
+        showProgress(false);
+        toast("注册成功");
     }
 
+    @Override
+    public void onFail(String msg) {
+        showProgress(false);
+        toast(msg);
+    }
 }
 
