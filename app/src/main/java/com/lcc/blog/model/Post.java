@@ -12,6 +12,8 @@ public class Post {
      * category_id : 0
      * view_count : 0
      * created_at : 2016-03-06 20:16:23
+     * username : lcc_luffy
+     * avatar :
      */
 
     public int id;
@@ -20,4 +22,7 @@ public class Post {
     public int category_id;
     public int view_count;
     public String created_at;
+    public String username;
+    public String avatar;
+
 }

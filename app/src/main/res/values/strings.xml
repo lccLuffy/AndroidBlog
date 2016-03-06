@@ -18,4 +18,5 @@
     <string name="title_activity_post">PostActivity</string>
     <string name="create_post">发文章</string>
     <string name="login">登录</string>
+    <string name="title_activity_web">WebActivity</string>
 </resources>
