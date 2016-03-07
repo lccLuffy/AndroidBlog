@@ -16,7 +16,7 @@ import retrofit2.http.Query;
 public interface PostService {
     @FormUrlEncoded
     @POST("post")
-    Call<Model<String>> createPost(@Field("title") String title, @Field("content_markdown") String content_markdown, @Query("token") String token);
+    Call<Model<String>> createPost(@Field("title") String title, @Field("content_markdown") String content_markdown);
 
     @GET("post")
     Call<PostModel> getPosts(@Query("page") int page);

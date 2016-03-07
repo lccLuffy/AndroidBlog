@@ -58,7 +58,7 @@ public class PostActivity extends BaseActivity {
             return;
         }
         PostService postService = RetrofitUtil.create(PostService.class);
-        postService.createPost(title,content_markdown,UserManager.getToken()).enqueue(new Callback<Model<String>>() {
+        postService.createPost(title,content_markdown).enqueue(new Callback<Model<String>>() {
             @Override
             public void onResponse(Call<Model<String>> call, Response<Model<String>> response) {
                 if(response.isSuccess())
