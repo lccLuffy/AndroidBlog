@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         stateRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        stateRecyclerView.setAdapter(postAdapter = new PostAdapter(this));
+        stateRecyclerView.setAdapter(postAdapter = new PostAdapter(this),false);
         stateRecyclerView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
