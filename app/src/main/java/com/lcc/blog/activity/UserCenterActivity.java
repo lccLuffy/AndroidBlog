@@ -9,9 +9,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lcc.blog.R;
+import com.lcc.blog.adapter.UserFragmentAdapter;
 import com.lcc.blog.base.BaseActivity;
 import com.lcc.blog.model.User;
 import com.lcc.blog.utils.UserManager;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import butterknife.Bind;
 
@@ -28,6 +30,9 @@ public class UserCenterActivity extends BaseActivity {
 
     @Bind(R.id.viewPage)
     ViewPager viewPager;
+
+    @Bind(R.id.viewpagerTab)
+    SmartTabLayout viewpagerTab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +41,9 @@ public class UserCenterActivity extends BaseActivity {
 
     private void init() {
         setupUserInfo(UserManager.getUser());
+        UserFragmentAdapter fragmentAdapter = new UserFragmentAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(fragmentAdapter);
+        viewpagerTab.setViewPager(viewPager);
     }
 
     @Override

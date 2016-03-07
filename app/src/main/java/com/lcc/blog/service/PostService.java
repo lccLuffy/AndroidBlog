@@ -22,6 +22,6 @@ public interface PostService {
     @GET("post")
     Call<PostModel> getAllPosts(@Query("page") int page);
 
-    @GET("{user_id}/post")
-    Call<PostModel> getPostsByUser(@Query("page") int page, @Path("user_id") int user_id);
+    @GET("{user_id}/posts")
+    Call<PostModel> getPostsByUser(@Path("user_id") int user_id, @Query("page") int page);
 }

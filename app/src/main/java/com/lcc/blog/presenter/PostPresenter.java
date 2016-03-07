@@ -6,5 +6,5 @@ package com.lcc.blog.presenter;
 public interface PostPresenter {
     void getAllPosts(int page);
 
-    void getPostsByUser(int page, int user_id);
+    void getPostsByUser(int user_id, int page);
 }

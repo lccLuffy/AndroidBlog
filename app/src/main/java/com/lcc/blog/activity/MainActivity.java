@@ -160,7 +160,7 @@ public class MainActivity extends BaseActivity implements PostView{
     }
     private void getData()
     {
-        postPresenter.getAllPosts(currentPage);;
+        postPresenter.getAllPosts(currentPage);
     }
 
     private void setupUserInfo(User user)
@@ -194,17 +194,26 @@ public class MainActivity extends BaseActivity implements PostView{
         {
             postAdapter.addData(postModel.results);
         }
+        stateRecyclerView.setRefreshing(false);
     }
 
 
     @Override
     public void onFail(String msg) {
+        if(postAdapter.isDataEmpty())
+        {
+            stateRecyclerView.showErrorView(msg);
+        }
+        else
+        {
+            postAdapter.showNoMoreView();
+        }
         stateRecyclerView.setRefreshing(false);
-        toast(msg);
     }
 
     @Override
     public void onEmpty() {
         stateRecyclerView.showEmptyView();
+        stateRecyclerView.setRefreshing(false);
     }
 }

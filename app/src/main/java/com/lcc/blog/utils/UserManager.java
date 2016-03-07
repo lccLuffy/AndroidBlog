@@ -25,7 +25,7 @@ public class UserManager {
 
     public static boolean isLogin()
     {
-        return authentication != null && authentication.token != null;
+        return authentication != null && authentication.token != null && getUser() != null;
     }
 
     public static boolean logout()

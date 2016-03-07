@@ -41,13 +41,13 @@ public class PostPresenterImpl implements PostPresenter{
     }
 
     @Override
-    public void getPostsByUser(final int page, int user_id)
+    public void getPostsByUser(int user_id,final int page)
     {
         if(postService == null)
         {
             postService = RetrofitUtil.create(PostService.class);
         }
-        postService.getPostsByUser(page,user_id).enqueue(new Callback<PostModel>() {
+        postService.getPostsByUser(user_id,page).enqueue(new Callback<PostModel>() {
             @Override
             public void onResponse(Call<PostModel> call, Response<PostModel> response) {
                 logic(page,response);
