@@ -7,6 +7,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -26,10 +27,13 @@ public class RetrofitUtil {
             {
                 if (retrofit == null)
                 {
+                    HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+                    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
                     OkHttpClient client =
                             new OkHttpClient
                                     .Builder()
                                     .addNetworkInterceptor(new AutInterceptor())
+                                    .addInterceptor(loggingInterceptor)
                                     .build();
                     retrofit = new Retrofit
                             .Builder()
