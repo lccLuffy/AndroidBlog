@@ -1,5 +1,6 @@
 package com.lcc.blog.utils;
 
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -23,13 +24,13 @@ public class RetrofitUtil {
         if (retrofit == null) {
             synchronized (RetrofitUtil.class)
             {
-                if (retrofit == null) {
+                if (retrofit == null)
+                {
                     OkHttpClient client =
                             new OkHttpClient
                                     .Builder()
-                                    .addInterceptor(new AutInterceptor())
+                                    .addNetworkInterceptor(new AutInterceptor())
                                     .build();
-
                     retrofit = new Retrofit
                             .Builder()
                             .baseUrl(DOMAIN + "/api/")
@@ -52,14 +53,16 @@ public class RetrofitUtil {
 
         @Override
         public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            if (UserManager.isLogin()) {
-                request = request
-                        .newBuilder()
-                        .addHeader("Authorization", "Bearer " + UserManager.getToken())
-                        .build();
+            Request originRequest = chain.request();
+            if (!UserManager.isLogin())
+            {
+                return chain.proceed(originRequest);
             }
-            return chain.proceed(request);
+            Request authorizationRequest = originRequest
+                    .newBuilder()
+                    .addHeader("Authorization", "Bearer " + UserManager.getToken())
+                    .build();
+            return chain.proceed(authorizationRequest);
         }
     }
 }
