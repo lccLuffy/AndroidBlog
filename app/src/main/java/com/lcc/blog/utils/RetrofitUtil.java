@@ -52,7 +52,8 @@ public class RetrofitUtil {
     {
 
         @Override
-        public Response intercept(Chain chain) throws IOException {
+        public Response intercept(Chain chain) throws IOException
+        {
             Request originRequest = chain.request();
             if (!UserManager.isLogin())
             {
