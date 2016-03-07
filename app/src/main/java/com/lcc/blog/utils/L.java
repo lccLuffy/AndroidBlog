@@ -1,13 +1,17 @@
 package com.lcc.blog.utils;
 
-import android.util.Log;
+import com.orhanobut.logger.Logger;
 
 /**
  * Created by lcc_luffy on 2016/3/5.
  */
 public class L {
-    public static int i(String msg)
+    public static void i(String msg,Object... args)
     {
-        return Log.i("main",msg);
+        Logger.i(msg,args);
+    }
+    public static void json(String json)
+    {
+        Logger.json(json);
     }
 }

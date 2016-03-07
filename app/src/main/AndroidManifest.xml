@@ -3,11 +3,8 @@
     package="com.lcc.blog">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".config.App"
@@ -28,20 +25,19 @@
         </activity>
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.RegisterActivity"
-            android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.PostActivity"
-            android:label="@string/title_activity_post"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.WebActivity"
-            android:label="@string/title_activity_web"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.UserCenterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

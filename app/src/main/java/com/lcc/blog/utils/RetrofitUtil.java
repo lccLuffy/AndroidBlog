@@ -1,6 +1,9 @@
 package com.lcc.blog.utils;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -29,16 +32,22 @@ public class RetrofitUtil {
                 {
                     HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
                     loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+                    Gson gson = new GsonBuilder()
+                            .setDateFormat("yy-MM-dd HH:mm:ss")
+                            .create();
+
                     OkHttpClient client =
                             new OkHttpClient
                                     .Builder()
                                     .addNetworkInterceptor(new AutInterceptor())
                                     .addInterceptor(loggingInterceptor)
                                     .build();
+
                     retrofit = new Retrofit
                             .Builder()
                             .baseUrl(DOMAIN + "/api/")
-                            .addConverterFactory(GsonConverterFactory.create())
+                            .addConverterFactory(GsonConverterFactory.create(gson))
                             .client(client)
                             .build();
                 }
@@ -65,6 +74,7 @@ public class RetrofitUtil {
             }
             Request authorizationRequest = originRequest
                     .newBuilder()
+                    .addHeader("Accept","application/vnd.blog.v1+json")
                     .addHeader("Authorization", "Bearer " + UserManager.getToken())
                     .build();
             return chain.proceed(authorizationRequest);

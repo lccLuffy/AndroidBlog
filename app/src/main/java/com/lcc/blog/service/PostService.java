@@ -1,4 +1,4 @@
-package com.lcc.blog.service.user;
+package com.lcc.blog.service;
 
 import com.lcc.blog.model.Model;
 import com.lcc.blog.model.PostModel;
@@ -8,6 +8,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -19,5 +20,8 @@ public interface PostService {
     Call<Model<String>> createPost(@Field("title") String title, @Field("content_markdown") String content_markdown);
 
     @GET("post")
-    Call<PostModel> getPosts(@Query("page") int page);
+    Call<PostModel> getAllPosts(@Query("page") int page);
+
+    @GET("{user_id}/post")
+    Call<PostModel> getPostsByUser(@Query("page") int page, @Path("user_id") int user_id);
 }

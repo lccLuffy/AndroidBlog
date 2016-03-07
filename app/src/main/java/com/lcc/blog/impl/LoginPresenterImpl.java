@@ -1,4 +1,4 @@
-package com.lcc.blog.iml;
+package com.lcc.blog.impl;
 
 import com.lcc.blog.model.Authentication;
 import com.lcc.blog.model.Model;
@@ -15,10 +15,10 @@ import retrofit2.Response;
 /**
  * Created by lcc_luffy on 2016/3/6.
  */
-public class LoginPresenterImp implements LoginPresenter {
+public class LoginPresenterImpl implements LoginPresenter {
 
     private LoginView loginView;
-    public LoginPresenterImp(LoginView loginView) {
+    public LoginPresenterImpl(LoginView loginView) {
         this.loginView = loginView;
     }
 

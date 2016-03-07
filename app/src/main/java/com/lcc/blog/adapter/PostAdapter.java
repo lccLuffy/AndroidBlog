@@ -13,6 +13,9 @@ import com.lcc.blog.model.Post;
 import com.lcc.state_refresh_recyclerview.Recycler.NiceAdapter;
 import com.lcc.state_refresh_recyclerview.Recycler.NiceViewHolder;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -37,6 +40,7 @@ public class PostAdapter extends NiceAdapter<Post> {
         return new H(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false));
     }
 
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA);
     class H extends NiceViewHolder<Post> {
         @Bind(R.id.title)
         TextView title;
@@ -51,12 +55,11 @@ public class PostAdapter extends NiceAdapter<Post> {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-
         @Override
         public void onBindData(Post data) {
             title.setText(data.title);
             username.setText(data.username);
-            created_at.setText(data.created_at);
+            created_at.setText(simpleDateFormat.format(data.created_at));
         }
     }
 }

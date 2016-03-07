@@ -9,7 +9,7 @@ import android.widget.EditText;
 import com.lcc.blog.R;
 import com.lcc.blog.base.BaseActivity;
 import com.lcc.blog.model.Model;
-import com.lcc.blog.service.user.PostService;
+import com.lcc.blog.service.PostService;
 import com.lcc.blog.utils.RetrofitUtil;
 import com.lcc.blog.utils.UserManager;
 
@@ -75,6 +75,7 @@ public class PostActivity extends BaseActivity {
                 }
                 else
                 {
+
                     toast("发布失败,"+response.message());
                 }
             }

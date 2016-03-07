@@ -28,10 +28,10 @@ public class UserManager {
         return authentication != null && authentication.token != null;
     }
 
-    public static void logout()
+    public static boolean logout()
     {
-        PrfUtil.start().remove(KEY);
         authentication = null;
+        return PrfUtil.start().remove(KEY).commit();
     }
 
     public static User getUser()

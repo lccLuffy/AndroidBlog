@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,31 +17,37 @@ import android.widget.TextView;
 
 import com.lcc.blog.R;
 import com.lcc.blog.base.BaseActivity;
-import com.lcc.blog.iml.LoginPresenterImp;
+import com.lcc.blog.impl.LoginPresenterImpl;
 import com.lcc.blog.presenter.LoginPresenter;
 import com.lcc.blog.view.LoginView;
+
+import butterknife.Bind;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends BaseActivity implements LoginView{
 
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+    @Bind(R.id.email)
+    AutoCompleteTextView mEmailView;
+
+    @Bind(R.id.password)
+    EditText mPasswordView;
+
+    @Bind(R.id.login_progress)
+    View mProgressView;
+
+    @Bind(R.id.login_form)
+    View mLoginFormView;
 
     LoginPresenter loginPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loginPresenter = new LoginPresenterImp(this);
+        loginPresenter = new LoginPresenterImpl(this);
 
 
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-
-        mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -61,9 +66,6 @@ public class LoginActivity extends BaseActivity implements LoginView{
                 attemptLogin();
             }
         });
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
 
         mEmailView.setText("528360256@qq.com");
         mPasswordView.setText("123456");
@@ -155,6 +157,7 @@ public class LoginActivity extends BaseActivity implements LoginView{
     public void onSuccess() {
         showProgress(false);
         toast("登录成功");
+        finish();
     }
 
     @Override

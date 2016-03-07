@@ -14,7 +14,7 @@ import android.widget.EditText;
 
 import com.lcc.blog.R;
 import com.lcc.blog.base.BaseActivity;
-import com.lcc.blog.iml.RegisterPresenterImp;
+import com.lcc.blog.impl.RegisterPresenterImpl;
 import com.lcc.blog.presenter.RegisterPresenter;
 import com.lcc.blog.view.RegisterView;
 
@@ -50,7 +50,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        registerPresenter = new RegisterPresenterImp(this);
+        registerPresenter = new RegisterPresenterImpl(this);
 
         register.setOnClickListener(new OnClickListener() {
             @Override

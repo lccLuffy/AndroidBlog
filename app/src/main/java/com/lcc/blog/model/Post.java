@@ -1,5 +1,7 @@
 package com.lcc.blog.model;
 
+import java.util.Date;
+
 /**
  * Created by lcc_luffy on 2016/3/6.
  */
@@ -21,7 +23,7 @@ public class Post {
     public String title;
     public int category_id;
     public int view_count;
-    public String created_at;
+    public Date created_at;
     public String username;
     public String avatar;
 

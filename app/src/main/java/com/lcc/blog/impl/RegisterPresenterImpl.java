@@ -1,4 +1,4 @@
-package com.lcc.blog.iml;
+package com.lcc.blog.impl;
 
 import com.lcc.blog.model.Authentication;
 import com.lcc.blog.model.Model;
@@ -15,16 +15,20 @@ import retrofit2.Response;
 /**
  * Created by lcc_luffy on 2016/3/6.
  */
-public class RegisterPresenterImp implements RegisterPresenter {
+public class RegisterPresenterImpl implements RegisterPresenter {
 
     private RegisterView registerView;
-    public RegisterPresenterImp(RegisterView registerView) {
+    private UserService userService;
+    public RegisterPresenterImpl(RegisterView registerView) {
         this.registerView = registerView;
     }
 
     @Override
     public void register(String username, String email, String password) {
-        UserService userService = RetrofitUtil.create(UserService.class);
+        if(userService == null)
+        {
+            userService = RetrofitUtil.create(UserService.class);
+        }
         Call<Model<Authentication>> authenticationCall = userService.register(
                 username,
                 email,
