@@ -1,4 +1,4 @@
-package com.lcc.blog.activity;
+package com.lcc.blog;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.lcc.blog.R;
 import com.lcc.blog.adapter.PostAdapter;
 import com.lcc.blog.base.BaseActivity;
 import com.lcc.blog.impl.post.PostPresenterImpl;
@@ -24,13 +23,13 @@ import com.lcc.blog.model.PostModel;
 import com.lcc.blog.model.User;
 import com.lcc.blog.presenter.PostPresenter;
 import com.lcc.blog.ui.post.PostActivity;
-import com.lcc.blog.ui.user.authentication.LoginActivity;
 import com.lcc.blog.ui.user.UserCenterActivity;
+import com.lcc.blog.ui.user.authentication.LoginActivity;
 import com.lcc.blog.utils.L;
 import com.lcc.blog.utils.RetrofitUtil;
 import com.lcc.blog.utils.UserManager;
 import com.lcc.blog.view.PostView;
-import com.lcc.state_refresh_recyclerview.Recycler.NiceAdapter;
+import com.lcc.state_refresh_recyclerview.Recycler.LoadMoreFooter;
 import com.lcc.state_refresh_recyclerview.Recycler.StateRecyclerView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -54,6 +53,7 @@ public class MainActivity extends BaseActivity implements PostView{
     PostAdapter postAdapter;
     int currentPage = 1;
     PostPresenter postPresenter;
+    LoadMoreFooter loadMoreFooter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,15 +81,16 @@ public class MainActivity extends BaseActivity implements PostView{
 
         stateRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         stateRecyclerView.setAdapter(postAdapter = new PostAdapter(this),false);
+        loadMoreFooter = postAdapter.getLoadMoreFooter();
         stateRecyclerView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 currentPage = 1;
-                postAdapter.showLoadMoreView();
+                loadMoreFooter.showLoadMoreView();
                 getData();
             }
         });
-        postAdapter.setOnLoadMoreListener(new NiceAdapter.OnLoadMoreListener() {
+        loadMoreFooter.setOnLoadMoreListener(new LoadMoreFooter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 ++currentPage;
@@ -191,7 +192,7 @@ public class MainActivity extends BaseActivity implements PostView{
     @Override
     public void onLoadMore(PostModel postModel, boolean noMoreData) {
         if(noMoreData)
-            postAdapter.showNoMoreView();
+            loadMoreFooter.showNoMoreView();
         else
         {
             postAdapter.addData(postModel.results);
@@ -208,7 +209,7 @@ public class MainActivity extends BaseActivity implements PostView{
         }
         else
         {
-            postAdapter.showNoMoreView();
+            loadMoreFooter.showNoMoreView();
         }
         stateRecyclerView.setRefreshing(false);
     }

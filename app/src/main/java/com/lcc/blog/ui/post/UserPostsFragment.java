@@ -14,7 +14,7 @@ import com.lcc.blog.model.PostModel;
 import com.lcc.blog.presenter.PostPresenter;
 import com.lcc.blog.utils.UserManager;
 import com.lcc.blog.view.PostView;
-import com.lcc.state_refresh_recyclerview.Recycler.NiceAdapter;
+import com.lcc.state_refresh_recyclerview.Recycler.LoadMoreFooter;
 import com.lcc.state_refresh_recyclerview.Recycler.StateRecyclerView;
 
 import butterknife.Bind;
@@ -30,6 +30,7 @@ public class UserPostsFragment extends BaseFragment implements PostView{
     PostPresenter postPresenter;
     private int currentPage = 1;
     private int user_id;
+    LoadMoreFooter loadMoreFooter;
     @Override
     public void initialize(@Nullable Bundle savedInstanceState) {
         if(UserManager.isLogin())
@@ -37,15 +38,16 @@ public class UserPostsFragment extends BaseFragment implements PostView{
         postPresenter = new PostPresenterImpl(this);
         stateRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         stateRecyclerView.setAdapter(postAdapter = new PostAdapter(context),true);
+        loadMoreFooter = postAdapter.getLoadMoreFooter();
         stateRecyclerView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 currentPage = 1;
-                postAdapter.showLoadMoreView();
+                loadMoreFooter.showLoadMoreView();
                 getData();
             }
         });
-        postAdapter.setOnLoadMoreListener(new NiceAdapter.OnLoadMoreListener() {
+        loadMoreFooter.setOnLoadMoreListener(new LoadMoreFooter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 ++currentPage;
@@ -73,7 +75,7 @@ public class UserPostsFragment extends BaseFragment implements PostView{
     @Override
     public void onLoadMore(PostModel postModel, boolean noMoreData) {
         if(noMoreData)
-            postAdapter.showNoMoreView();
+            loadMoreFooter.showNoMoreView();
         else
             postAdapter.addData(postModel.results);
         stateRecyclerView.setRefreshing(false);
@@ -87,7 +89,7 @@ public class UserPostsFragment extends BaseFragment implements PostView{
         }
         else
         {
-            postAdapter.showNoMoreView();
+            loadMoreFooter.showNoMoreView();
         }
         stateRecyclerView.setRefreshing(false);
     }

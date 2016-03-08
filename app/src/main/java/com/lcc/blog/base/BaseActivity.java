@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.lcc.blog.R;
-import com.lcc.blog.activity.MainActivity;
+import com.lcc.blog.MainActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
