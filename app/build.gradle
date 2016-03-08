@@ -17,6 +17,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -38,7 +39,7 @@ dependencies {
      * My own library
      */
     /** *************************************************************/
-    compile 'com.lcc.luffy:state-refresh-recyclerview:1.0.2'
+    compile 'com.lcc.luffy:state-refresh-recyclerview:1.0.9'
     /**
      * removeable
      */

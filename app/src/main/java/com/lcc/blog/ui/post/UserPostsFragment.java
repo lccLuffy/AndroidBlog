@@ -89,7 +89,7 @@ public class UserPostsFragment extends BaseFragment implements PostView{
         }
         else
         {
-            loadMoreFooter.showNoMoreView();
+            loadMoreFooter.showErrorView();
         }
         stateRecyclerView.setRefreshing(false);
     }

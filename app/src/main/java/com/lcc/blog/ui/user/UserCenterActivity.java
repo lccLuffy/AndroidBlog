@@ -57,10 +57,10 @@ public class UserCenterActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
-        actionBar.setDisplayShowTitleEnabled(false);;
     }
 
     private void init() {
+        actionBar.setDisplayShowTitleEnabled(false);
         setupUserInfo(UserManager.getUser());
         UserFragmentAdapter fragmentAdapter = new UserFragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(fragmentAdapter);
