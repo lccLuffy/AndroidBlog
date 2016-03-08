@@ -60,6 +60,7 @@ public class MainActivity extends BaseActivity implements PostView{
         postPresenter = new PostPresenterImpl(this);
         init();
         getData();
+
     }
 
     private void init() {

@@ -1,14 +1,18 @@
 package com.lcc.blog.ui.user;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -52,11 +56,16 @@ public class UserCenterActivity extends BaseActivity {
     @Bind(R.id.viewpagerTab)
     SmartTabLayout viewpagerTab;
 
+    @Bind(R.id.appBarLayout)
+    AppBarLayout appBarLayout;
 
+    @Bind(R.id.userInfoWrapper)
+    LinearLayout linearLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
+        appBarLayout.addOnOffsetChangedListener(new OnOffsetChangedListenerHelper());
     }
 
     private void init() {
@@ -202,5 +211,67 @@ public class UserCenterActivity extends BaseActivity {
             return false;
         }
         return true;
+    }
+    private class OnOffsetChangedListenerHelper implements AppBarLayout.OnOffsetChangedListener
+    {
+        boolean avatarCanFadeOut = true,avatarCanFadeIn = false;
+        boolean hasFadeOut = false,hasFadeIn = true;
+        @Override
+        public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+            int totalScrollRange = appBarLayout.getTotalScrollRange();
+
+            float positiveOffset = -verticalOffset;
+            float percent = positiveOffset / totalScrollRange;
+            linearLayout.setAlpha(1-percent);
+
+            avatarCanFadeOut = percent >= 0.65f;
+
+            avatarCanFadeIn = percent < 0.65f;
+
+
+            if(!hasFadeOut && avatarCanFadeOut)
+            {
+                hasFadeOut = true;
+                animateOut(avatar_iv);
+                animateOut(username_tv);
+
+            }
+            else if(!hasFadeIn && avatarCanFadeIn)
+            {
+                hasFadeIn = true;
+                animateIn(avatar_iv);
+                animateIn(username_tv);
+            }
+        }
+        private void animateOut(View target)
+        {
+            target.animate()
+                    .scaleX(0)
+                    .scaleY(0)
+                    .alpha(0)
+                    .setDuration(150)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            hasFadeIn = false;
+                        }
+                    })
+                    .start();
+        }
+        private void animateIn(View target)
+        {
+            target.animate()
+                    .scaleX(1)
+                    .scaleY(1)
+                    .alpha(1)
+                    .setDuration(150)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            hasFadeOut = false;
+                        }
+                    })
+                    .start();
+        }
     }
 }
