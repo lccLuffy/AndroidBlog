@@ -1,4 +1,4 @@
-package com.lcc.blog.activity;
+package com.lcc.blog.ui.web;
 
 import android.content.DialogInterface;
 import android.graphics.Bitmap;

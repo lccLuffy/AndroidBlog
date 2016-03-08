@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.UserPostsFragment">
+    tools:context=".ui.post.UserPostsFragment">
 
     <com.lcc.state_refresh_recyclerview.Recycler.StateRecyclerView
         android:id="@+id/stateRecyclerView"

@@ -2,6 +2,7 @@ package com.lcc.blog.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -21,15 +22,18 @@ public abstract class BaseActivity extends AppCompatActivity{
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
 
+    protected ActionBar actionBar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        if(!(this instanceof MainActivity) && getSupportActionBar() != null)
+        actionBar = getSupportActionBar();
+        if(!(this instanceof MainActivity) && actionBar != null)
         {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 

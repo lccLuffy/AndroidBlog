@@ -1,4 +1,4 @@
-package com.lcc.blog.fragment;
+package com.lcc.blog.ui.post;
 
 
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.lcc.blog.R;
 import com.lcc.blog.adapter.PostAdapter;
 import com.lcc.blog.base.BaseFragment;
-import com.lcc.blog.impl.PostPresenterImpl;
+import com.lcc.blog.impl.post.PostPresenterImpl;
 import com.lcc.blog.model.PostModel;
 import com.lcc.blog.presenter.PostPresenter;
 import com.lcc.blog.utils.UserManager;
@@ -36,7 +36,7 @@ public class UserPostsFragment extends BaseFragment implements PostView{
             user_id = UserManager.getUser().id;
         postPresenter = new PostPresenterImpl(this);
         stateRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        stateRecyclerView.setAdapter(postAdapter = new PostAdapter(context),false);
+        stateRecyclerView.setAdapter(postAdapter = new PostAdapter(context),true);
         stateRecyclerView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

@@ -1,4 +1,4 @@
-package com.lcc.blog.impl;
+package com.lcc.blog.impl.post;
 
 import com.lcc.blog.model.PostModel;
 import com.lcc.blog.presenter.PostPresenter;

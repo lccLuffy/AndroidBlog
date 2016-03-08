@@ -19,10 +19,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lcc.blog.R;
 import com.lcc.blog.adapter.PostAdapter;
 import com.lcc.blog.base.BaseActivity;
-import com.lcc.blog.impl.PostPresenterImpl;
+import com.lcc.blog.impl.post.PostPresenterImpl;
 import com.lcc.blog.model.PostModel;
 import com.lcc.blog.model.User;
 import com.lcc.blog.presenter.PostPresenter;
+import com.lcc.blog.ui.post.PostActivity;
+import com.lcc.blog.ui.user.authentication.LoginActivity;
+import com.lcc.blog.ui.user.UserCenterActivity;
 import com.lcc.blog.utils.L;
 import com.lcc.blog.utils.RetrofitUtil;
 import com.lcc.blog.utils.UserManager;
@@ -57,7 +60,6 @@ public class MainActivity extends BaseActivity implements PostView{
         postPresenter = new PostPresenterImpl(this);
         init();
         getData();
-
     }
 
     private void init() {

@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.lcc.blog.fragment.UserPostsFragment;
+import com.lcc.blog.ui.post.UserPostsFragment;
 
 import java.util.ArrayList;
 import java.util.List;

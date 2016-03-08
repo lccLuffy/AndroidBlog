@@ -1,4 +1,4 @@
-package com.lcc.blog.activity;
+package com.lcc.blog.ui.post;
 
 import android.os.Bundle;
 import android.text.TextUtils;

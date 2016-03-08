@@ -1,12 +1,12 @@
-package com.lcc.blog.impl;
+package com.lcc.blog.impl.user.authentication;
 
 import com.lcc.blog.model.Authentication;
 import com.lcc.blog.model.Model;
-import com.lcc.blog.presenter.RegisterPresenter;
+import com.lcc.blog.presenter.LoginPresenter;
 import com.lcc.blog.service.user.UserService;
 import com.lcc.blog.utils.RetrofitUtil;
 import com.lcc.blog.utils.UserManager;
-import com.lcc.blog.view.RegisterView;
+import com.lcc.blog.ui.user.authentication.LoginView;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -15,26 +15,18 @@ import retrofit2.Response;
 /**
  * Created by lcc_luffy on 2016/3/6.
  */
-public class RegisterPresenterImpl implements RegisterPresenter {
+public class LoginPresenterImpl implements LoginPresenter {
 
-    private RegisterView registerView;
-    private UserService userService;
-    public RegisterPresenterImpl(RegisterView registerView) {
-        this.registerView = registerView;
+    private LoginView loginView;
+    public LoginPresenterImpl(LoginView loginView) {
+        this.loginView = loginView;
     }
 
     @Override
-    public void register(String username, String email, String password) {
-        if(userService == null)
-        {
-            userService = RetrofitUtil.create(UserService.class);
-        }
-        Call<Model<Authentication>> authenticationCall = userService.register(
-                username,
-                email,
-                password
-        );
-        authenticationCall.enqueue(new Callback<Model<Authentication>>() {
+    public void login(String email, String password) {
+        UserService userService = RetrofitUtil.create(UserService.class);
+        Call<Model<Authentication>> tokenCall = userService.login(email,password);
+        tokenCall.enqueue(new Callback<Model<Authentication>>() {
             @Override
             public void onResponse(Call<Model<Authentication>> call, Response<Model<Authentication>> response) {
                 Model<Authentication> model = response.body();
@@ -43,22 +35,22 @@ public class RegisterPresenterImpl implements RegisterPresenter {
                     if(!model.error)
                     {
                         UserManager.saveAuthentication(model.results);
-                        registerView.onSuccess();
+                        loginView.onSuccess();
                     }
                     else
                     {
-                        registerView.onFail("注册失败,"+model.message);
+                        loginView.onFail("登录失败,"+model.message);
                     }
                 }
                 else
                 {
-                    registerView.onFail("注册失败");
+                    loginView.onFail("登录失败");
                 }
             }
 
             @Override
             public void onFailure(Call<Model<Authentication>> call, Throwable t) {
-                registerView.onFail("登录失败,"+t.toString());
+                loginView.onFail("登录失败,"+t.toString());
             }
         });
     }

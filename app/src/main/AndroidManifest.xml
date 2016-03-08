@@ -23,20 +23,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".ui.user.authentication.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.RegisterActivity"
+            android:name=".ui.user.authentication.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.PostActivity"
+            android:name=".ui.post.PostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.WebActivity"
+            android:name=".ui.web.WebActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.UserCenterActivity"
+            android:name=".ui.user.UserCenterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
