@@ -11,15 +11,16 @@ import android.view.View;
 import com.lcc.blog.adapter.PostAdapter;
 import com.lcc.blog.base.BaseActivity;
 import com.lcc.blog.impl.post.PostPresenterImpl;
+import com.lcc.blog.impl.user.UserProfilePresenterImpl;
 import com.lcc.blog.model.PostModel;
-import com.lcc.blog.model.User;
 import com.lcc.blog.presenter.PostPresenter;
+import com.lcc.blog.presenter.UserProfilePresenter;
 import com.lcc.blog.ui.post.PostActivity;
 import com.lcc.blog.ui.setting.SettingActivity;
 import com.lcc.blog.ui.user.UserCenterActivity;
+import com.lcc.blog.ui.user.UserProfileView;
 import com.lcc.blog.ui.user.authentication.LoginActivity;
-import com.lcc.blog.utils.L;
-import com.lcc.blog.utils.RetrofitUtil;
+import com.lcc.blog.ui.user.authentication.RegisterActivity;
 import com.lcc.blog.utils.UserManager;
 import com.lcc.blog.view.PostView;
 import com.lcc.state_refresh_recyclerview.Recycler.LoadMoreFooter;
@@ -34,49 +35,40 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseActivity implements PostView{
+public class MainActivity extends BaseActivity implements PostView,UserProfileView{
     @Bind(R.id.stateRecyclerView)
     StateRecyclerView stateRecyclerView;
 
     PostAdapter postAdapter;
     int currentPage = 1;
     PostPresenter postPresenter;
+    UserProfilePresenter userProfilePresenter;
     LoadMoreFooter loadMoreFooter;
+
+
+    Drawer result;
+    AccountHeader accountHeader;
+    ProfileDrawerItem profileDrawerItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         postPresenter = new PostPresenterImpl(this);
+        userProfilePresenter = new UserProfilePresenterImpl(this);
         init();
         getData();
         setupDrawer();
     }
-    Drawer result;
-    ProfileDrawerItem profileDrawerItem;
+
     private void setupDrawer() {
-
-        if(UserManager.isLogin())
-        {
-            profileDrawerItem = new ProfileDrawerItem()
-                    .withName(UserManager.getUser().username)
-                    .withEmail(UserManager.getUser().email)
-                    .withIcon(/*"https://github.com/fluidicon.png"*/UserManager.getUser().avatar);
-        }
-        else
-        {
-            profileDrawerItem = new ProfileDrawerItem()
-                    .withName("游客")
-                    .withIcon(R.mipmap.ic_avatar);
-        }
-
-        AccountHeader accountHeader = new AccountHeaderBuilder()
+        profileDrawerItem = new ProfileDrawerItem();
+        accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
-                .withHeaderBackground(R.mipmap.user_info_bg)
                 .addProfiles(profileDrawerItem)
+                .withHeaderBackground(R.mipmap.user_info_bg)
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean current) {
@@ -87,7 +79,7 @@ public class MainActivity extends BaseActivity implements PostView{
                 .build();
 
         final PrimaryDrawerItem homeItem = new PrimaryDrawerItem().withName("Home").withIcon(FontAwesome.Icon.faw_home);
-        PrimaryDrawerItem settingItem = new PrimaryDrawerItem().withName("Setting").withIcon(FontAwesome.Icon.faw_cog);
+        final PrimaryDrawerItem settingItem = new PrimaryDrawerItem().withName("Setting").withIcon(FontAwesome.Icon.faw_cog);
 
         result = new DrawerBuilder()
                 .withActivity(this)
@@ -95,12 +87,12 @@ public class MainActivity extends BaseActivity implements PostView{
                 .withAccountHeader(accountHeader)
                 .addDrawerItems(
                         homeItem,
-                        new DividerDrawerItem(),
-                        settingItem)
+                        new DividerDrawerItem()
+                        )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if(position == 3)
+                        if(drawerItem == settingItem)
                         {
                             startActivity(new Intent(MainActivity.this, SettingActivity.class));
                             return true;
@@ -109,11 +101,11 @@ public class MainActivity extends BaseActivity implements PostView{
                     }
                 })
                 .build();
+        result.addStickyFooterItem(settingItem);
+        userProfilePresenter.refreshUserProfile(profileDrawerItem);
     }
 
     private void init() {
-
-        setupUserInfo(UserManager.getUser());
         stateRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         stateRecyclerView.setAdapter(postAdapter = new PostAdapter(this),false);
         loadMoreFooter = postAdapter.getLoadMoreFooter();
@@ -147,25 +139,6 @@ public class MainActivity extends BaseActivity implements PostView{
         return true;
     }
 
-    private void check()
-    {
-        OkHttpUtils.get()
-                .addHeader("Authorization", "Bearer " + UserManager.getToken())
-                .url(RetrofitUtil.DOMAIN+"/api/user/checkToken")
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(okhttp3.Call call, Exception e) {
-                        L.i(e.toString());
-                    }
-
-                    @Override
-                    public void onResponse(String response) {
-                        L.json(response);
-                    }
-                });
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -183,9 +156,7 @@ public class MainActivity extends BaseActivity implements PostView{
             return true;
         }
         if (id == R.id.action_register) {
-            /*startActivity(new Intent(this,RegisterActivity.class));*/
-            toast("check");
-            check();
+            startActivity(new Intent(this,RegisterActivity.class));
             return true;
         }
         if (id == R.id.action_logout) {
@@ -201,10 +172,6 @@ public class MainActivity extends BaseActivity implements PostView{
         postPresenter.getAllPosts(currentPage);
     }
 
-    private void setupUserInfo(User user)
-    {
-
-    }
 
     @Override
     public void onRefresh(PostModel postModel)
@@ -242,5 +209,10 @@ public class MainActivity extends BaseActivity implements PostView{
     public void onEmpty() {
         stateRecyclerView.showEmptyView();
         stateRecyclerView.setRefreshing(false);
+    }
+
+    @Override
+    public void onProfile(ProfileDrawerItem profile) {
+        accountHeader.updateProfile(profile);
     }
 }
