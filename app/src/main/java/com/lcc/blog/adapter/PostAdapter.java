@@ -36,7 +36,7 @@ public class PostAdapter extends NiceAdapter<Post> {
     }
 
     @Override
-    protected NiceViewHolder onCreateNiceViewHolder(ViewGroup parent, int viewType) {
+    protected NiceViewHolder<Post> onCreateNiceViewHolder(ViewGroup parent, int viewType) {
         return new H(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false));
     }
 

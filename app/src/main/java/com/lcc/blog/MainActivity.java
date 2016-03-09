@@ -2,10 +2,7 @@ package com.lcc.blog;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -23,6 +20,7 @@ import com.lcc.blog.model.PostModel;
 import com.lcc.blog.model.User;
 import com.lcc.blog.presenter.PostPresenter;
 import com.lcc.blog.ui.post.PostActivity;
+import com.lcc.blog.ui.setting.SettingActivity;
 import com.lcc.blog.ui.user.UserCenterActivity;
 import com.lcc.blog.ui.user.authentication.LoginActivity;
 import com.lcc.blog.utils.L;
@@ -31,6 +29,16 @@ import com.lcc.blog.utils.UserManager;
 import com.lcc.blog.view.PostView;
 import com.lcc.state_refresh_recyclerview.Recycler.LoadMoreFooter;
 import com.lcc.state_refresh_recyclerview.Recycler.StateRecyclerView;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -39,12 +47,6 @@ import butterknife.Bind;
 public class MainActivity extends BaseActivity implements PostView{
     @Bind(R.id.stateRecyclerView)
     StateRecyclerView stateRecyclerView;
-
-    @Bind(R.id.drawLayout)
-    DrawerLayout drawerLayout;
-
-    @Bind(R.id.navigationView)
-    NavigationView navigationView;
 
     TextView username_tv;
     TextView email_tv;
@@ -60,14 +62,55 @@ public class MainActivity extends BaseActivity implements PostView{
         postPresenter = new PostPresenterImpl(this);
         init();
         getData();
+        setupDrawer();
+    }
+    Drawer result;
+    private void setupDrawer() {
+        AccountHeader accountHeader = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.mipmap.user_info_bg)
+                .addProfiles(
+                        new ProfileDrawerItem()
+                                .withName("lcc_luffy")
+                                .withEmail("528360256@qq.com")
+                                .withIcon("https://github.com/fluidicon.png")
+                                /*.withIcon(R.mipmap.ic_avatar)*/
+                )
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean current) {
+                        startActivity(new Intent(MainActivity.this, UserCenterActivity.class));
+                        return true;
+                    }
+                })
+                .build();
+        final PrimaryDrawerItem homeItem = new PrimaryDrawerItem().withName("Home").withIcon(FontAwesome.Icon.faw_home);
+        PrimaryDrawerItem settingItem = new PrimaryDrawerItem().withName("Setting").withIcon(FontAwesome.Icon.faw_cog);
 
+        result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withAccountHeader(accountHeader)
+                .addDrawerItems(
+                        homeItem,
+                        new DividerDrawerItem(),
+                        settingItem)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if(position == 3)
+                        {
+                            startActivity(new Intent(MainActivity.this, SettingActivity.class));
+                            return true;
+                        }
+                        return false;
+                    }
+                })
+                .build();
     }
 
     private void init() {
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-        View header = navigationView.getHeaderView(0);
+        /*View header = null;
         username_tv = (TextView) header.findViewById(R.id.username);
         email_tv = (TextView) header.findViewById(R.id.email);
         avatar_iv = (ImageView) header.findViewById(R.id.avatar);
@@ -79,7 +122,7 @@ public class MainActivity extends BaseActivity implements PostView{
         });
 
         setupUserInfo(UserManager.getUser());
-
+*/
         stateRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         stateRecyclerView.setAdapter(postAdapter = new PostAdapter(this),false);
         loadMoreFooter = postAdapter.getLoadMoreFooter();
