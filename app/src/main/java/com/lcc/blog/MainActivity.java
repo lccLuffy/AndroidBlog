@@ -4,15 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lcc.blog.adapter.PostAdapter;
 import com.lcc.blog.base.BaseActivity;
 import com.lcc.blog.impl.post.PostPresenterImpl;
@@ -48,10 +43,6 @@ public class MainActivity extends BaseActivity implements PostView{
     @Bind(R.id.stateRecyclerView)
     StateRecyclerView stateRecyclerView;
 
-    TextView username_tv;
-    TextView email_tv;
-    ImageView avatar_iv;
-
     PostAdapter postAdapter;
     int currentPage = 1;
     PostPresenter postPresenter;
@@ -65,17 +56,27 @@ public class MainActivity extends BaseActivity implements PostView{
         setupDrawer();
     }
     Drawer result;
+    ProfileDrawerItem profileDrawerItem;
     private void setupDrawer() {
+
+        if(UserManager.isLogin())
+        {
+            profileDrawerItem = new ProfileDrawerItem()
+                    .withName(UserManager.getUser().username)
+                    .withEmail(UserManager.getUser().email)
+                    .withIcon(/*"https://github.com/fluidicon.png"*/UserManager.getUser().avatar);
+        }
+        else
+        {
+            profileDrawerItem = new ProfileDrawerItem()
+                    .withName("游客")
+                    .withIcon(R.mipmap.ic_avatar);
+        }
+
         AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.mipmap.user_info_bg)
-                .addProfiles(
-                        new ProfileDrawerItem()
-                                .withName("lcc_luffy")
-                                .withEmail("528360256@qq.com")
-                                .withIcon("https://github.com/fluidicon.png")
-                                /*.withIcon(R.mipmap.ic_avatar)*/
-                )
+                .addProfiles(profileDrawerItem)
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean current) {
@@ -84,6 +85,7 @@ public class MainActivity extends BaseActivity implements PostView{
                     }
                 })
                 .build();
+
         final PrimaryDrawerItem homeItem = new PrimaryDrawerItem().withName("Home").withIcon(FontAwesome.Icon.faw_home);
         PrimaryDrawerItem settingItem = new PrimaryDrawerItem().withName("Setting").withIcon(FontAwesome.Icon.faw_cog);
 
@@ -110,19 +112,8 @@ public class MainActivity extends BaseActivity implements PostView{
     }
 
     private void init() {
-        /*View header = null;
-        username_tv = (TextView) header.findViewById(R.id.username);
-        email_tv = (TextView) header.findViewById(R.id.email);
-        avatar_iv = (ImageView) header.findViewById(R.id.avatar);
-        avatar_iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,UserCenterActivity.class));
-            }
-        });
 
         setupUserInfo(UserManager.getUser());
-*/
         stateRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         stateRecyclerView.setAdapter(postAdapter = new PostAdapter(this),false);
         loadMoreFooter = postAdapter.getLoadMoreFooter();
@@ -212,17 +203,6 @@ public class MainActivity extends BaseActivity implements PostView{
 
     private void setupUserInfo(User user)
     {
-        if(user != null)
-        {
-            username_tv.setText(user.username);
-            email_tv.setText(user.email);
-            if(user.avatar != null)
-                user.avatar = user.avatar.trim();
-            if(!TextUtils.isEmpty(user.avatar))
-            {
-                Glide.with(this).load(user.avatar).diskCacheStrategy(DiskCacheStrategy.ALL).into(avatar_iv);
-            }
-        }
 
     }
 
