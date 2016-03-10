@@ -1,7 +1,10 @@
 package com.lcc.blog.utils;
 
+import com.lcc.blog.impl.user.UserProfilePresenterImpl;
 import com.lcc.blog.model.Authentication;
 import com.lcc.blog.model.User;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by lcc_luffy on 2016/3/6.
@@ -30,8 +33,12 @@ public class UserManager {
 
     public static boolean logout()
     {
+        if(!isLogin())
+            return false;
         authentication = null;
-        return PrfUtil.start().remove(KEY).commit();
+        boolean result = PrfUtil.start().remove(KEY).commit();
+        EventBus.getDefault().post(new UserProfilePresenterImpl.Message());
+        return result;
     }
 
     public static User getUser()

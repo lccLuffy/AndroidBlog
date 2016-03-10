@@ -12,7 +12,6 @@ import com.lcc.blog.base.BaseFragment;
 import com.lcc.blog.impl.post.PostPresenterImpl;
 import com.lcc.blog.model.PostModel;
 import com.lcc.blog.presenter.PostPresenter;
-import com.lcc.blog.utils.UserManager;
 import com.lcc.blog.view.PostView;
 import com.lcc.state_refresh_recyclerview.Recycler.LoadMoreFooter;
 import com.lcc.state_refresh_recyclerview.Recycler.StateRecyclerView;
@@ -31,10 +30,15 @@ public class UserPostsFragment extends BaseFragment implements PostView{
     private int currentPage = 1;
     private int user_id;
     LoadMoreFooter loadMoreFooter;
+
+    public static UserPostsFragment newInstance(int user_id)
+    {
+        UserPostsFragment fragment = new UserPostsFragment();
+        fragment.user_id = user_id;
+        return fragment;
+    }
     @Override
     public void initialize(@Nullable Bundle savedInstanceState) {
-        if(UserManager.isLogin())
-            user_id = UserManager.getUser().id;
         postPresenter = new PostPresenterImpl(this);
         stateRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         stateRecyclerView.setAdapter(postAdapter = new PostAdapter(context),true);

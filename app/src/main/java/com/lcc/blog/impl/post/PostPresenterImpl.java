@@ -23,11 +23,7 @@ public class PostPresenterImpl implements PostPresenter{
     @Override
     public void getAllPosts(final int page)
     {
-        if(postService == null)
-        {
-            postService = RetrofitUtil.create(PostService.class);
-        }
-        postService.getAllPosts(page).enqueue(new Callback<PostModel>() {
+        getService().getAllPosts(page).enqueue(new Callback<PostModel>() {
             @Override
             public void onResponse(Call<PostModel> call, Response<PostModel> response) {
                 logic(page,response);
@@ -40,14 +36,19 @@ public class PostPresenterImpl implements PostPresenter{
         });
     }
 
-    @Override
-    public void getPostsByUser(int user_id,final int page)
+    private PostService getService()
     {
         if(postService == null)
         {
             postService = RetrofitUtil.create(PostService.class);
         }
-        postService.getPostsByUser(user_id,page).enqueue(new Callback<PostModel>() {
+        return postService;
+    }
+
+    @Override
+    public void getPostsByUser(int user_id,final int page)
+    {
+        getService().getPostsByUser(user_id,page).enqueue(new Callback<PostModel>() {
             @Override
             public void onResponse(Call<PostModel> call, Response<PostModel> response) {
                 logic(page,response);
@@ -59,6 +60,7 @@ public class PostPresenterImpl implements PostPresenter{
             }
         });
     }
+
 
     private void logic(int page,Response<PostModel> response)
     {

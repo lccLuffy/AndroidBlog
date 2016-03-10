@@ -1,0 +1,12 @@
+package com.lcc.blog.view;
+
+import com.lcc.blog.model.User;
+
+/**
+ * Created by lcc_luffy on 2016/3/9.
+ */
+public interface ProfileView {
+    void onPostsCount(int count);
+    void onUser(User user);
+    void onUserFail(String msg);
+}

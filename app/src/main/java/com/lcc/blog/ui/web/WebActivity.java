@@ -1,6 +1,8 @@
 package com.lcc.blog.ui.web;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
@@ -45,6 +47,12 @@ public class WebActivity extends BaseActivity {
         webView.loadUrl(mUrl);
     }
 
+    public static Intent newIntent(Context context,String url)
+    {
+        Intent i = new Intent(context,WebActivity.class);
+        i.putExtra("url",url);
+        return i;
+    }
     @Override
     protected int getLayoutId() {
         return R.layout.activity_web;

@@ -1,4 +1,6 @@
-package com.lcc.blog.ui.user;
+package com.lcc.blog.view;
+
+import android.support.annotation.NonNull;
 
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 
@@ -7,4 +9,5 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
  */
 public interface UserProfileView {
     void onProfile(ProfileDrawerItem profile);
+    @NonNull ProfileDrawerItem getProfile();
 }

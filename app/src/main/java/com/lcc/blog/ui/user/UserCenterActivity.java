@@ -2,9 +2,10 @@ package com.lcc.blog.ui.user;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -18,13 +19,17 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lcc.blog.R;
 import com.lcc.blog.adapter.UserFragmentAdapter;
 import com.lcc.blog.base.BaseActivity;
+import com.lcc.blog.impl.user.ProfilePresenterImpl;
 import com.lcc.blog.model.User;
+import com.lcc.blog.presenter.ProfilePresenter;
 import com.lcc.blog.utils.UserManager;
+import com.lcc.blog.view.ProfileView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 
-public class UserCenterActivity extends BaseActivity {
+public class UserCenterActivity extends BaseActivity implements ProfileView {
 
     @Bind(R.id.username)
     TextView username_tv;
@@ -44,36 +49,38 @@ public class UserCenterActivity extends BaseActivity {
     @Bind(R.id.appBarLayout)
     AppBarLayout appBarLayout;
 
+    @Bind(R.id.postsCount)
+    TextView postsCount;
+
     @Bind(R.id.userInfoWrapper)
     LinearLayout linearLayout;
+
+    ProfilePresenter profilePresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        profilePresenter = new ProfilePresenterImpl(this);
         init();
+
     }
 
     private void init() {
         actionBar.setDisplayShowTitleEnabled(false);
-        setupUserInfo(UserManager.getUser());
-        UserFragmentAdapter fragmentAdapter = new UserFragmentAdapter(getSupportFragmentManager());
+        int user_id = getIntent().getIntExtra("user_id",0);
+        UserFragmentAdapter fragmentAdapter = new UserFragmentAdapter(getSupportFragmentManager(),user_id);
         viewPager.setAdapter(fragmentAdapter);
         viewpagerTab.setViewPager(viewPager);
         appBarLayout.addOnOffsetChangedListener(new OnOffsetChangedListenerHelper());
-    }
-
-
-    private void startPhotoZoom(Uri uri) {
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        // crop为true是设置在开启的intent中设置显示的view可以剪裁
-        intent.putExtra("crop", "true");
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX",300);
-        intent.putExtra("outputY",300);
-
-        intent.putExtra("return-data", true);
-
+        profilePresenter.getPostsCount(user_id);
+        if(UserManager.isLogin() && UserManager.getUser().id == user_id)
+        {
+            setupUserInfo(UserManager.getUser());
+        }
+        else
+        {
+            profilePresenter.getUser(user_id);
+            Logger.i("profilePresenter.getUser(user_id);");
+        }
     }
 
     @Override
@@ -92,6 +99,29 @@ public class UserCenterActivity extends BaseActivity {
             }
         }
 
+    }
+
+    @NonNull
+    public static Intent newIntent(Context context,int user_id)
+    {
+        Intent intent = new Intent(context,UserCenterActivity.class);
+        intent.putExtra("user_id",user_id);
+        return intent;
+    }
+
+    @Override
+    public void onPostsCount(int count) {
+        postsCount.setText("文章\n"+count);
+    }
+
+    @Override
+    public void onUser(User user) {
+        setupUserInfo(user);
+    }
+
+    @Override
+    public void onUserFail(String msg) {
+        toast(msg);
     }
 
     private class OnOffsetChangedListenerHelper implements AppBarLayout.OnOffsetChangedListener

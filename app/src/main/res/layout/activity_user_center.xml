@@ -72,12 +72,13 @@
                     android:padding="10dp">
 
                     <TextView
+                        android:id="@+id/postsCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="post\n54"
+                        android:text="文章\n0"
                         android:textColor="#FFF" />
 
                     <TextView

@@ -1,12 +1,15 @@
 package com.lcc.blog.impl.user.authentication;
 
+import com.lcc.blog.impl.user.UserProfilePresenterImpl;
 import com.lcc.blog.model.Authentication;
 import com.lcc.blog.model.Model;
 import com.lcc.blog.presenter.RegisterPresenter;
 import com.lcc.blog.service.user.UserService;
+import com.lcc.blog.ui.user.authentication.RegisterView;
 import com.lcc.blog.utils.RetrofitUtil;
 import com.lcc.blog.utils.UserManager;
-import com.lcc.blog.ui.user.authentication.RegisterView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,6 +46,7 @@ public class RegisterPresenterImpl implements RegisterPresenter {
                     if(!model.error)
                     {
                         UserManager.saveAuthentication(model.results);
+                        EventBus.getDefault().post(new UserProfilePresenterImpl.Message());
                         registerView.onSuccess();
                     }
                     else

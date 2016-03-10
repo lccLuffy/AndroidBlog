@@ -14,11 +14,10 @@ import java.util.List;
  */
 public class UserFragmentAdapter extends FragmentPagerAdapter{
     List<Fragment> fragments;
-    public UserFragmentAdapter(FragmentManager fm) {
+    public UserFragmentAdapter(FragmentManager fm,int user_id) {
         super(fm);
         fragments = new ArrayList<>(2);
-        fragments.add(new UserPostsFragment());
-        fragments.add(new UserPostsFragment());
+        fragments.add(UserPostsFragment.newInstance(user_id));
     }
 
     @Override

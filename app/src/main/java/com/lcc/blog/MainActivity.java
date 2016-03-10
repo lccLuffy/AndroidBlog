@@ -2,6 +2,7 @@ package com.lcc.blog;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
@@ -15,10 +16,10 @@ import com.lcc.blog.impl.user.UserProfilePresenterImpl;
 import com.lcc.blog.model.PostModel;
 import com.lcc.blog.presenter.PostPresenter;
 import com.lcc.blog.presenter.UserProfilePresenter;
-import com.lcc.blog.ui.post.PostActivity;
+import com.lcc.blog.ui.post.CreatePostActivity;
 import com.lcc.blog.ui.setting.SettingActivity;
 import com.lcc.blog.ui.user.UserCenterActivity;
-import com.lcc.blog.ui.user.UserProfileView;
+import com.lcc.blog.view.UserProfileView;
 import com.lcc.blog.ui.user.authentication.LoginActivity;
 import com.lcc.blog.ui.user.authentication.RegisterActivity;
 import com.lcc.blog.utils.UserManager;
@@ -64,16 +65,21 @@ public class MainActivity extends BaseActivity implements PostView,UserProfileVi
     }
 
     private void setupDrawer() {
-        profileDrawerItem = new ProfileDrawerItem();
         accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
-                .addProfiles(profileDrawerItem)
+                .addProfiles(getProfile())
                 .withHeaderBackground(R.mipmap.user_info_bg)
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean current) {
-                        startActivity(new Intent(MainActivity.this, UserCenterActivity.class));
-                        return true;
+                        if(UserManager.isLogin())
+                        {
+                            startActivity(UserCenterActivity.newIntent(MainActivity.this, UserManager.getUser().id));
+                            return true;
+                        }
+                        toast("请登录");
+                        return false;
+
                     }
                 })
                 .build();
@@ -102,7 +108,13 @@ public class MainActivity extends BaseActivity implements PostView,UserProfileVi
                 })
                 .build();
         result.addStickyFooterItem(settingItem);
-        userProfilePresenter.refreshUserProfile(profileDrawerItem);
+        userProfilePresenter.refreshUserProfile();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        userProfilePresenter.onDestroy();
     }
 
     private void init() {
@@ -152,7 +164,7 @@ public class MainActivity extends BaseActivity implements PostView,UserProfileVi
             return true;
         }
         if (id == R.id.action_post) {
-            startActivity(new Intent(this,PostActivity.class));
+            startActivity(new Intent(this,CreatePostActivity.class));
             return true;
         }
         if (id == R.id.action_register) {
@@ -171,7 +183,6 @@ public class MainActivity extends BaseActivity implements PostView,UserProfileVi
     {
         postPresenter.getAllPosts(currentPage);
     }
-
 
     @Override
     public void onRefresh(PostModel postModel)
@@ -214,5 +225,13 @@ public class MainActivity extends BaseActivity implements PostView,UserProfileVi
     @Override
     public void onProfile(ProfileDrawerItem profile) {
         accountHeader.updateProfile(profile);
+    }
+
+    @NonNull
+    @Override
+    public ProfileDrawerItem getProfile() {
+        if(profileDrawerItem == null)
+            profileDrawerItem = new ProfileDrawerItem();
+        return profileDrawerItem;
     }
 }
