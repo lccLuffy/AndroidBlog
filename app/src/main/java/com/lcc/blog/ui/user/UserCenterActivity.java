@@ -25,7 +25,6 @@ import com.lcc.blog.presenter.ProfilePresenter;
 import com.lcc.blog.utils.UserManager;
 import com.lcc.blog.view.ProfileView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 
@@ -79,7 +78,6 @@ public class UserCenterActivity extends BaseActivity implements ProfileView {
         else
         {
             profilePresenter.getUser(user_id);
-            Logger.i("profilePresenter.getUser(user_id);");
         }
     }
 
@@ -128,9 +126,11 @@ public class UserCenterActivity extends BaseActivity implements ProfileView {
     {
         boolean avatarCanFadeOut = true,avatarCanFadeIn = false;
         boolean hasFadeOut = false,hasFadeIn = true;
+        int totalScrollRange;
         @Override
         public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-            int totalScrollRange = appBarLayout.getTotalScrollRange();
+
+            totalScrollRange = appBarLayout.getTotalScrollRange();
 
             float positiveOffset = -verticalOffset;
             float percent = positiveOffset / totalScrollRange;
@@ -139,21 +139,23 @@ public class UserCenterActivity extends BaseActivity implements ProfileView {
 
             avatarCanFadeIn = percent < 0.65f;
 
-
             if(!hasFadeOut && avatarCanFadeOut)
             {
                 hasFadeOut = true;
-                animateOut(avatar_iv);
-                animateOut(username_tv);
+                animateOut(linearLayout);
+                /*animateOut(username_tv);*/
 
             }
             else if(!hasFadeIn && avatarCanFadeIn)
             {
                 hasFadeIn = true;
-                animateIn(avatar_iv);
-                animateIn(username_tv);
+                animateIn(linearLayout);
+                /*animateIn(username_tv);*/
             }
         }
+
+
+
         private void animateOut(View target)
         {
             target.animate()

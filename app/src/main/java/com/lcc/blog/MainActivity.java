@@ -57,11 +57,13 @@ public class MainActivity extends BaseActivity implements PostView,UserProfileVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startActivity(UserCenterActivity.newIntent(MainActivity.this, 1));
         postPresenter = new PostPresenterImpl(this);
         userProfilePresenter = new UserProfilePresenterImpl(this);
         init();
         getData();
         setupDrawer();
+
     }
 
     private void setupDrawer() {
