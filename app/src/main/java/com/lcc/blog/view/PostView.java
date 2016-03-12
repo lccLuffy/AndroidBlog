@@ -1,6 +1,6 @@
 package com.lcc.blog.view;
 
-import com.lcc.blog.model.PostModel;
+import com.lcc.blog.bean.PostModel;
 
 /**
  * Created by lcc_luffy on 2016/3/7.

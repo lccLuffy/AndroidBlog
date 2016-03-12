@@ -10,7 +10,7 @@ import com.lcc.blog.R;
 import com.lcc.blog.adapter.PostAdapter;
 import com.lcc.blog.base.BaseFragment;
 import com.lcc.blog.impl.post.PostPresenterImpl;
-import com.lcc.blog.model.PostModel;
+import com.lcc.blog.bean.PostModel;
 import com.lcc.blog.presenter.PostPresenter;
 import com.lcc.blog.view.PostView;
 import com.lcc.state_refresh_recyclerview.Recycler.LoadMoreFooter;

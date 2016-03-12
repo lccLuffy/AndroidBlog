@@ -1,8 +1,10 @@
 package com.lcc.blog.utils;
 
+import android.support.annotation.NonNull;
+
 import com.lcc.blog.impl.user.UserProfilePresenterImpl;
-import com.lcc.blog.model.Authentication;
-import com.lcc.blog.model.User;
+import com.lcc.blog.bean.Authentication;
+import com.lcc.blog.bean.User;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -12,6 +14,16 @@ import org.greenrobot.eventbus.EventBus;
 public class UserManager {
     private static final String KEY = "USER";
     private static Authentication authentication;
+    private static final User GUEST;
+
+    static
+    {
+        GUEST = new User();
+        GUEST.avatar=null;
+        GUEST.username = "Guest";
+        GUEST.email="email@example.com";
+        GUEST.id=0;
+    }
     public static void init()
     {
         authentication = Json.fromJson(PrfUtil.get().getString(KEY,null),Authentication.class);
@@ -41,9 +53,10 @@ public class UserManager {
         return result;
     }
 
+    @NonNull
     public static User getUser()
     {
-        return authentication == null ? null : authentication.user;
+        return authentication == null ? GUEST : authentication.user;
     }
     public static String getToken()
     {

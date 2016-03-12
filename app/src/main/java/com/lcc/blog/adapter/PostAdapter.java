@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.lcc.blog.R;
-import com.lcc.blog.model.Post;
+import com.lcc.blog.bean.Post;
 import com.lcc.blog.ui.user.UserCenterActivity;
 import com.lcc.blog.ui.web.WebActivity;
 import com.lcc.blog.utils.URLGenerate;

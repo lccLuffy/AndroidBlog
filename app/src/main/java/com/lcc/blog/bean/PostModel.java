@@ -1,4 +1,4 @@
-package com.lcc.blog.model;
+package com.lcc.blog.bean;
 
 import java.util.List;
 

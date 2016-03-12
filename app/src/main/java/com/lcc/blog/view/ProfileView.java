@@ -1,6 +1,6 @@
 package com.lcc.blog.view;
 
-import com.lcc.blog.model.User;
+import com.lcc.blog.bean.User;
 
 /**
  * Created by lcc_luffy on 2016/3/9.

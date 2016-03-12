@@ -1,7 +1,7 @@
 package com.lcc.blog.impl.user;
 
-import com.lcc.blog.model.Model;
-import com.lcc.blog.model.User;
+import com.lcc.blog.bean.Model;
+import com.lcc.blog.bean.User;
 import com.lcc.blog.presenter.ProfilePresenter;
 import com.lcc.blog.service.user.UserProfileService;
 import com.lcc.blog.utils.RetrofitUtil;

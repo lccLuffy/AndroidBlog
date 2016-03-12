@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.lcc.blog.R;
-import com.lcc.blog.model.Tag;
+import com.lcc.blog.bean.Tag;
 import com.lcc.state_refresh_recyclerview.Recycler.NiceAdapter;
 import com.lcc.state_refresh_recyclerview.Recycler.NiceViewHolder;
 

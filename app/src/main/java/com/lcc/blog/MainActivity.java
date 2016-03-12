@@ -13,17 +13,17 @@ import com.lcc.blog.adapter.PostAdapter;
 import com.lcc.blog.base.BaseActivity;
 import com.lcc.blog.impl.post.PostPresenterImpl;
 import com.lcc.blog.impl.user.UserProfilePresenterImpl;
-import com.lcc.blog.model.PostModel;
+import com.lcc.blog.bean.PostModel;
 import com.lcc.blog.presenter.PostPresenter;
 import com.lcc.blog.presenter.UserProfilePresenter;
 import com.lcc.blog.ui.post.CreatePostActivity;
 import com.lcc.blog.ui.setting.SettingActivity;
 import com.lcc.blog.ui.user.UserCenterActivity;
-import com.lcc.blog.view.UserProfileView;
 import com.lcc.blog.ui.user.authentication.LoginActivity;
 import com.lcc.blog.ui.user.authentication.RegisterActivity;
 import com.lcc.blog.utils.UserManager;
 import com.lcc.blog.view.PostView;
+import com.lcc.blog.view.UserProfileView;
 import com.lcc.state_refresh_recyclerview.Recycler.LoadMoreFooter;
 import com.lcc.state_refresh_recyclerview.Recycler.StateRecyclerView;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -63,7 +63,6 @@ public class MainActivity extends BaseActivity implements PostView,UserProfileVi
         init();
         getData();
         setupDrawer();
-
     }
 
     private void setupDrawer() {

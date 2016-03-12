@@ -20,7 +20,7 @@ import com.lcc.blog.R;
 import com.lcc.blog.adapter.UserFragmentAdapter;
 import com.lcc.blog.base.BaseActivity;
 import com.lcc.blog.impl.user.ProfilePresenterImpl;
-import com.lcc.blog.model.User;
+import com.lcc.blog.bean.User;
 import com.lcc.blog.presenter.ProfilePresenter;
 import com.lcc.blog.utils.UserManager;
 import com.lcc.blog.view.ProfileView;

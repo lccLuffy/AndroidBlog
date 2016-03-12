@@ -1,7 +1,7 @@
 package com.lcc.blog.service;
 
-import com.lcc.blog.model.Model;
-import com.lcc.blog.model.PostModel;
+import com.lcc.blog.bean.Model;
+import com.lcc.blog.bean.PostModel;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

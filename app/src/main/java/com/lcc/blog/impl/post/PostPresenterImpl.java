@@ -1,6 +1,6 @@
 package com.lcc.blog.impl.post;
 
-import com.lcc.blog.model.PostModel;
+import com.lcc.blog.bean.PostModel;
 import com.lcc.blog.presenter.PostPresenter;
 import com.lcc.blog.service.PostService;
 import com.lcc.blog.utils.RetrofitUtil;

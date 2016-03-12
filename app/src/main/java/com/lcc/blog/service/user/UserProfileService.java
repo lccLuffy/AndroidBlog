@@ -1,7 +1,7 @@
 package com.lcc.blog.service.user;
 
-import com.lcc.blog.model.Model;
-import com.lcc.blog.model.User;
+import com.lcc.blog.bean.Model;
+import com.lcc.blog.bean.User;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;

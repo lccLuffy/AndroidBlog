@@ -1,7 +1,7 @@
 package com.lcc.blog.service.user;
 
-import com.lcc.blog.model.Authentication;
-import com.lcc.blog.model.Model;
+import com.lcc.blog.bean.Authentication;
+import com.lcc.blog.bean.Model;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
