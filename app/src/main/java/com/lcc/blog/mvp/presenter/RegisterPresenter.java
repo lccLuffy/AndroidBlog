@@ -1,4 +1,4 @@
-package com.lcc.blog.presenter;
+package com.lcc.blog.mvp.presenter;
 
 /**
  * Created by lcc_luffy on 2016/3/6.

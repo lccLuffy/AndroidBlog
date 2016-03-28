@@ -2,10 +2,10 @@ package com.lcc.blog.impl.user;
 
 import com.lcc.blog.bean.Model;
 import com.lcc.blog.bean.User;
-import com.lcc.blog.presenter.ProfilePresenter;
+import com.lcc.blog.mvp.presenter.ProfilePresenter;
 import com.lcc.blog.service.user.UserProfileService;
 import com.lcc.blog.utils.RetrofitUtil;
-import com.lcc.blog.view.ProfileView;
+import com.lcc.blog.mvp.view.ProfileView;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;

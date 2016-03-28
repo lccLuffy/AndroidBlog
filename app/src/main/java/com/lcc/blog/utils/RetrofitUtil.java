@@ -19,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by lcc_luffy on 2016/3/5.
  */
 public class RetrofitUtil {
-    public static final String DOMAIN = "http://115.28.69.91";
+    public static final String DOMAIN = "http://115.28.69.91:10086";
     private static Retrofit retrofit;
 
     private RetrofitUtil() {

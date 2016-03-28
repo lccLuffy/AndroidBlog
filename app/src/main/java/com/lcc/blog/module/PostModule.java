@@ -2,8 +2,8 @@ package com.lcc.blog.module;
 
 import com.lcc.blog.component.ActivityScope;
 import com.lcc.blog.impl.post.PostPresenterImpl;
-import com.lcc.blog.presenter.PostPresenter;
-import com.lcc.blog.view.PostView;
+import com.lcc.blog.mvp.presenter.PostPresenter;
+import com.lcc.blog.mvp.view.PostView;
 
 import dagger.Module;
 import dagger.Provides;

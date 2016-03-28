@@ -18,14 +18,15 @@ import android.widget.TextView;
 import com.lcc.blog.R;
 import com.lcc.blog.base.BaseActivity;
 import com.lcc.blog.impl.user.authentication.LoginPresenterImpl;
-import com.lcc.blog.presenter.LoginPresenter;
+import com.lcc.blog.mvp.presenter.LoginPresenter;
+import com.lcc.blog.mvp.view.LoginView;
 
 import butterknife.Bind;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends BaseActivity implements LoginView{
+public class LoginActivity extends BaseActivity implements LoginView {
 
     @Bind(R.id.email)
     AutoCompleteTextView mEmailView;

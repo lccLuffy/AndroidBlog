@@ -15,14 +15,15 @@ import android.widget.EditText;
 import com.lcc.blog.R;
 import com.lcc.blog.base.BaseActivity;
 import com.lcc.blog.impl.user.authentication.RegisterPresenterImpl;
-import com.lcc.blog.presenter.RegisterPresenter;
+import com.lcc.blog.mvp.presenter.RegisterPresenter;
+import com.lcc.blog.mvp.view.RegisterView;
 
 import butterknife.Bind;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class RegisterActivity extends BaseActivity implements RegisterView{
+public class RegisterActivity extends BaseActivity implements RegisterView {
 
     @Bind(R.id.email)
     AutoCompleteTextView mEmailView;

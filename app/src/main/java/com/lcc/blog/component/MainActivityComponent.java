@@ -1,5 +1,6 @@
 package com.lcc.blog.component;
 
+import com.lcc.blog.MainActivity;
 import com.lcc.blog.module.PostModule;
 
 import dagger.Component;
@@ -10,4 +11,5 @@ import dagger.Component;
 @ActivityScope
 @Component(dependencies = AppComponent.class,modules = PostModule.class)
 public interface MainActivityComponent {
+    void inject(MainActivity mainActivity);
 }

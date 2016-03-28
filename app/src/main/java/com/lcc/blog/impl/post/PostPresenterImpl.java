@@ -1,10 +1,10 @@
 package com.lcc.blog.impl.post;
 
 import com.lcc.blog.bean.PostModel;
-import com.lcc.blog.presenter.PostPresenter;
+import com.lcc.blog.mvp.presenter.PostPresenter;
 import com.lcc.blog.service.PostService;
 import com.lcc.blog.utils.RetrofitUtil;
-import com.lcc.blog.view.PostView;
+import com.lcc.blog.mvp.view.PostView;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -11,19 +11,21 @@ import android.view.View;
 
 import com.lcc.blog.adapter.PostAdapter;
 import com.lcc.blog.base.BaseActivity;
-import com.lcc.blog.impl.post.PostPresenterImpl;
-import com.lcc.blog.impl.user.UserProfilePresenterImpl;
 import com.lcc.blog.bean.PostModel;
-import com.lcc.blog.presenter.PostPresenter;
-import com.lcc.blog.presenter.UserProfilePresenter;
+import com.lcc.blog.component.AppComponent;
+import com.lcc.blog.component.DaggerMainActivityComponent;
+import com.lcc.blog.impl.user.UserProfilePresenterImpl;
+import com.lcc.blog.module.PostModule;
+import com.lcc.blog.mvp.presenter.PostPresenter;
+import com.lcc.blog.mvp.presenter.UserProfilePresenter;
 import com.lcc.blog.ui.post.CreatePostActivity;
 import com.lcc.blog.ui.setting.SettingActivity;
 import com.lcc.blog.ui.user.UserCenterActivity;
 import com.lcc.blog.ui.user.authentication.LoginActivity;
 import com.lcc.blog.ui.user.authentication.RegisterActivity;
 import com.lcc.blog.utils.UserManager;
-import com.lcc.blog.view.PostView;
-import com.lcc.blog.view.UserProfileView;
+import com.lcc.blog.mvp.view.PostView;
+import com.lcc.blog.mvp.view.UserProfileView;
 import com.lcc.state_refresh_recyclerview.Recycler.LoadMoreFooter;
 import com.lcc.state_refresh_recyclerview.Recycler.StateRecyclerView;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -37,6 +39,8 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 
 public class MainActivity extends BaseActivity implements PostView,UserProfileView{
@@ -45,7 +49,10 @@ public class MainActivity extends BaseActivity implements PostView,UserProfileVi
 
     PostAdapter postAdapter;
     int currentPage = 1;
+
+    @Inject
     PostPresenter postPresenter;
+
     UserProfilePresenter userProfilePresenter;
     LoadMoreFooter loadMoreFooter;
 
@@ -57,12 +64,19 @@ public class MainActivity extends BaseActivity implements PostView,UserProfileVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startActivity(UserCenterActivity.newIntent(MainActivity.this, 1));
-        postPresenter = new PostPresenterImpl(this);
         userProfilePresenter = new UserProfilePresenterImpl(this);
         init();
         getData();
         setupDrawer();
+    }
+
+    @Override
+    protected void component(AppComponent appComponent) {
+        DaggerMainActivityComponent.builder()
+                .appComponent(appComponent)
+                .postModule(new PostModule(this))
+                .build()
+                .inject(this);
     }
 
     private void setupDrawer() {

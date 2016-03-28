@@ -3,11 +3,11 @@ package com.lcc.blog.impl.user.authentication;
 import com.lcc.blog.impl.user.UserProfilePresenterImpl;
 import com.lcc.blog.bean.Authentication;
 import com.lcc.blog.bean.Model;
-import com.lcc.blog.presenter.LoginPresenter;
+import com.lcc.blog.mvp.presenter.LoginPresenter;
 import com.lcc.blog.service.user.UserService;
 import com.lcc.blog.utils.RetrofitUtil;
 import com.lcc.blog.utils.UserManager;
-import com.lcc.blog.ui.user.authentication.LoginView;
+import com.lcc.blog.mvp.view.LoginView;
 
 import org.greenrobot.eventbus.EventBus;
 

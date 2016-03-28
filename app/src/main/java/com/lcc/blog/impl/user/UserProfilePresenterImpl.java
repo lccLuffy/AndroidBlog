@@ -1,8 +1,8 @@
 package com.lcc.blog.impl.user;
 
 import com.lcc.blog.R;
-import com.lcc.blog.presenter.UserProfilePresenter;
-import com.lcc.blog.view.UserProfileView;
+import com.lcc.blog.mvp.presenter.UserProfilePresenter;
+import com.lcc.blog.mvp.view.UserProfileView;
 import com.lcc.blog.utils.UserManager;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 

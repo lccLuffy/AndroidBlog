@@ -1,4 +1,4 @@
-package com.lcc.blog.ui.user.authentication;
+package com.lcc.blog.mvp.view;
 
 /**
  * Created by lcc_luffy on 2016/3/6.

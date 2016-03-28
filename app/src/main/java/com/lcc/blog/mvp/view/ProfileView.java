@@ -1,4 +1,4 @@
-package com.lcc.blog.view;
+package com.lcc.blog.mvp.view;
 
 import com.lcc.blog.bean.User;
 

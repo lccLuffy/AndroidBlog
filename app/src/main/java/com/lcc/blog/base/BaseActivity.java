@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.lcc.blog.R;
 import com.lcc.blog.MainActivity;
+import com.lcc.blog.component.AppComponent;
+import com.lcc.blog.config.App;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,7 +39,10 @@ public abstract class BaseActivity extends AppCompatActivity{
         {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        component(App.getAppComponent());
     }
+
+    protected void component(AppComponent appComponent){};
 
 
     private Toast toast;

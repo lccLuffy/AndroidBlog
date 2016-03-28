@@ -11,8 +11,8 @@ import com.lcc.blog.adapter.PostAdapter;
 import com.lcc.blog.base.BaseFragment;
 import com.lcc.blog.impl.post.PostPresenterImpl;
 import com.lcc.blog.bean.PostModel;
-import com.lcc.blog.presenter.PostPresenter;
-import com.lcc.blog.view.PostView;
+import com.lcc.blog.mvp.presenter.PostPresenter;
+import com.lcc.blog.mvp.view.PostView;
 import com.lcc.state_refresh_recyclerview.Recycler.LoadMoreFooter;
 import com.lcc.state_refresh_recyclerview.Recycler.StateRecyclerView;
 
